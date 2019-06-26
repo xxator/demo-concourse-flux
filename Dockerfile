@@ -1,3 +1,6 @@
 FROM dockercloud/hello-world
+
+LABEL maintainer="romain@particule.io"
+
 ADD index.php /www/index.php
-ADD logo_osones.png /www/logo.png
+ADD logo_particule.png /www/logo.png
