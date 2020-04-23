@@ -2,13 +2,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: demo-concourse-flux
   name: helloworld
   labels:
     app: helloworld
-  annotations:
-    flux.weave.works/automated: "true"
-    flux.weave.works/tag.helloworld: semver:~1.0
 spec:
   replicas: 1
   revisionHistoryLimit: 2
@@ -17,13 +13,12 @@ spec:
       app: helloworld
   template:
     metadata:
-      namespace: demo-concourse-flux
       labels:
         app: helloworld
     spec:
       containers:
       - name: helloworld
-        image: particule/demo-concourse-flux:1.0.7
+        image: particule/helloworld:0.0.1
         imagePullPolicy: Always
         ports:
         - name: web
@@ -32,27 +27,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: demo-concourse-flux
-  name: helloworld-svc
+  name: helloworld
 spec:
   ports:
   - port: 80
   selector:
     app: helloworld
-  type: ClusterIP
----
-apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
-metadata:
-  namespace: demo-concourse-flux
-  name: helloworld
-  annotations:
-    kubernetes.io/ingress.class: traefik
-spec:
-  rules:
-  - host: demo-concourse-flux.particule.io
-    http:
-      paths:
-      - backend:
-          serviceName: helloworld-svc
-          servicePort: 80
+  type: NodePort
