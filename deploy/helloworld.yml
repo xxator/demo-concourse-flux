@@ -6,8 +6,8 @@ metadata:
   labels:
     app: helloworld
 spec:
-  replicas: 5
-  revisionHistoryLimit: 2
+  replicas: 6
+  revisionHistoryLimit: 5
   selector:
     matchLabels:
       app: helloworld
