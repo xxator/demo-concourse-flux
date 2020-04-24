@@ -1,11 +1,16 @@
 ---
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
 metadata:
   name: helloworld
   labels:
     app: helloworld
 spec:
+  strategy:
+    canary:
+      steps:
+      - setWeight: 20
+      - pause: {}
   replicas: 6
   revisionHistoryLimit: 5
   selector:
