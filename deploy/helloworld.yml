@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: helloworld
-        image: particule/helloworld:0.0.1
+        image: particule/helloworld:0.0.2
         imagePullPolicy: Always
         ports:
         - name: web
