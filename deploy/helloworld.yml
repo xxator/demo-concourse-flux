@@ -10,7 +10,11 @@ spec:
     canary:
       steps:
       - setWeight: 20
-      - pause: {}
+      - pause:
+          duration: "30s"
+      - setWeight: 50
+      - pause:
+          duration: "30s"
   replicas: 6
   revisionHistoryLimit: 5
   selector:
