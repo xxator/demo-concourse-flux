@@ -6,7 +6,7 @@ metadata:
   labels:
     app: helloworld
 spec:
-  replicas: 1
+  replicas: 5
   revisionHistoryLimit: 2
   selector:
     matchLabels:
@@ -33,4 +33,4 @@ spec:
   - port: 80
   selector:
     app: helloworld
-  type: NodePort
+  type: LoadBalancer
