@@ -9,7 +9,7 @@ spec:
   - name: url
     value: 51.159.24.218
   - name: port
-    value: 5000
+    value: "5000"
   metrics:
   - name: webcheck
     successCondition: "true"
