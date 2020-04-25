@@ -4,16 +4,11 @@ kind: AnalysisTemplate
 metadata:
   name: webcheck
 spec:
-  args:
-  - name: url
-    value: 51.159.24.218
-  - name: port
-    value: "5000"
   metrics:
   - name: webcheck
     successCondition: "true"
     provider:
       web:
         # paceholders are resolved when an AnalysisRun is created
-        url: "{{ args.url }}:{{ args.port }}"
+        url: "51.159.24.218:5000"
         jsonPath: "{$.ok}"
