@@ -42,7 +42,7 @@ metadata:
   name: colorapi
 spec:
   ports:
-  - port: 80
+  - port: 5000
   selector:
     app: colorapi
   type: LoadBalancer
