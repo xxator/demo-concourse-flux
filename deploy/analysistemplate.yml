@@ -6,17 +6,9 @@ metadata:
 spec:
   metrics:
   - name: webcheck
-    count: 1
-    interval: 10s
     successCondition: "true"
     provider:
-      job:
-        backoffLimit: 1
-        spec:
-          template:
-            spec:
-              containers:
-              - name: check
-                image: tutum/curl
-                command: ["curl", "http://51.159.24.218/"]
-              restartPolicy: Never
+      web:
+        # paceholders are resolved when an AnalysisRun is created
+        url: "http://51.159.24.218/"
+        jsonPath: "{$.ok}"
