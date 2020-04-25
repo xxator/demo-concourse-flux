@@ -2,9 +2,9 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
-  name: helloworld
+  name: colorapi
   labels:
-    app: helloworld
+    app: colorapi
 spec:
   strategy:
     canary:
@@ -22,14 +22,14 @@ spec:
   revisionHistoryLimit: 5
   selector:
     matchLabels:
-      app: helloworld
+      app: colorapi
   template:
     metadata:
       labels:
-        app: helloworld
+        app: colorapi
     spec:
       containers:
-      - name: helloworld
+      - name: colorapi
         image: particule/simplecolorapi:1.0
         imagePullPolicy: Always
         ports:
@@ -39,10 +39,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: helloworld
+  name: colorapi
 spec:
   ports:
   - port: 80
   selector:
-    app: helloworld
+    app: colorapi
   type: LoadBalancer
