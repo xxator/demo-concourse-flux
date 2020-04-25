@@ -7,12 +7,14 @@ spec:
   args:
   - name: service-name
   - name: url
-    value: 51.159.26.70
+    value: 51.159.24.218
+  - name: port
+    value: 5000
   metrics:
   - name: webcheck
     successCondition: "true"
     provider:
       web:
         # paceholders are resolved when an AnalysisRun is created
-        url: "{{ args.url }}"
+        url: "{{ args.url }}:{{ args.port }}"
         jsonPath: "{$.ok}"
