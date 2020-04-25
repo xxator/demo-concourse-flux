@@ -5,7 +5,6 @@ metadata:
   name: webcheck
 spec:
   args:
-  - name: service-name
   - name: url
     value: 51.159.24.218
   - name: port
