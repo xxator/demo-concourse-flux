@@ -12,14 +12,13 @@ spec:
         templates:
         - templateName: webcheck
       steps:
-      - setWeight: 20
+      - setWeight: 25
       - pause:
           duration: "30s"
       - setWeight: 50
       - pause:
           duration: "30s"
-      - setWeight: 90
-  replicas: 30
+  replicas: 3
   revisionHistoryLimit: 2
   selector:
     matchLabels:
