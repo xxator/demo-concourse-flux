@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
       - name: colorapi
-        image: particule/simplecolorapi:4.0
+        image: particule/simplecolorapi:1.0
         imagePullPolicy: Always
         ports:
         - name: web
