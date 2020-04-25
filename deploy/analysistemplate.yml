@@ -8,12 +8,11 @@ spec:
   - name: service-name
   - name: url
     value: 51.159.26.70
-  - name: webpage
-    value: hello.php
   metrics:
   - name: webcheck
     successCondition: "true"
     provider:
       web:
         # paceholders are resolved when an AnalysisRun is created
-        url: "{{ args.url }}/{{ args.webpage }}"
+        url: "{{ args.url }}"
+        jsonPath: "{$.ok}"
