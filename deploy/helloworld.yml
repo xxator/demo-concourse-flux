@@ -18,8 +18,9 @@ spec:
       - setWeight: 50
       - pause:
           duration: "30s"
-  replicas: 6
-  revisionHistoryLimit: 5
+      - setWeight: 90
+  replicas: 30
+  revisionHistoryLimit: 2
   selector:
     matchLabels:
       app: colorapi
