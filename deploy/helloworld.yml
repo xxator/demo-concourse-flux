@@ -45,4 +45,4 @@ spec:
   - port: 80
   selector:
     app: colorapi
-  type: NodePort
+  type: LoadBalancer
