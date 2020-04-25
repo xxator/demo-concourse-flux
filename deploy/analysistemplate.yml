@@ -8,6 +8,7 @@ spec:
   - name: webcheck
     successCondition: "true"
     count: 30
+    interval: 2m
     provider:
       web:
         # paceholders are resolved when an AnalysisRun is created
