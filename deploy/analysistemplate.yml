@@ -6,8 +6,8 @@ metadata:
 spec:
   metrics:
   - name: webcheck
-    count: 3
-    interval: 60s
+    count: 1
+    interval: 10s
     successCondition: "true"
     provider:
       job:
