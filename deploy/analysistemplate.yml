@@ -4,13 +4,66 @@ kind: AnalysisTemplate
 metadata:
   name: webcheck
 spec:
+  args:
+  - name: host
   metrics:
   - name: webcheck
-    successCondition: "true"
-    count: 30
-    interval: 1s
+    failureLimit: 1
+    interval: 5s
+    successCondition: result == "ok"
     provider:
       web:
-        # paceholders are resolved when an AnalysisRun is created
-        url: "http://51.159.24.218/"
-        jsonPath: "{$.ok}"
+        url: "http://10.44.4.132/"
+        jsonPath: "{$.status}"
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: jobcheck
+spec:
+  args:
+  - name: host
+  metrics:
+  - name: jobcheck
+    failureLimit: 2
+    count: 5
+    interval: 5s
+    provider:
+      job:
+        backoffLimit: 1
+        spec:
+          template:
+            spec:
+              containers:
+              - name: check
+                image: tutum/curl
+                command: ["curl", "http://{{args.host}}/"]
+              restartPolicy: Never
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: http-benchmark
+spec:
+  args:
+  - name: host
+  metrics:
+  - name: http-benchmark
+    failureLimit: 3
+    interval: 5s
+    count: 3
+    provider:
+      job:
+        spec:
+          template:
+            spec:
+              containers:
+              - name: load-tester
+                image: argoproj/load-tester:latest
+                command: [sh, -xec]
+                args:
+                - |
+                  wrk -t1 -c1 -d3 -s report.lua http://{{args.host}}/
+                  jq -e '.errors_total <= 10' report.json
+              restartPolicy: Never
+          backoffLimit: 1
