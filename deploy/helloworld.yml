@@ -1,6 +1,6 @@
 ---
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
 metadata:
   namespace: demo-concourse-flux
   name: helloworld
@@ -10,49 +10,76 @@ metadata:
     flux.weave.works/automated: "true"
     flux.weave.works/tag.helloworld: semver:~1.0
 spec:
-  replicas: 1
+  strategy:
+    maxSurge: 10
+    canary:
+      canaryService: canary-colorapi
+      stableService: colorapi
+      trafficRouting:
+        nginx:
+           stableIngress: primary-ingress  # required
+           annotationPrefix: argorollout.nginx.ingress.kubernetes.io # optional
+           additionalIngressAnnotations: #optional
+             canary-by-header: X-Canary
+      steps:
+      - setWeight: 25
+      - pause:
+          duration: "90s"
+      - setWeight: 50
+      - pause:
+          duration: "90s"
+  replicas: 10
   revisionHistoryLimit: 2
   selector:
     matchLabels:
-      app: helloworld
+      app: colorapi
   template:
     metadata:
-      namespace: demo-concourse-flux
       labels:
-        app: helloworld
+        app: colorapi
     spec:
       containers:
-      - name: helloworld
+      - name: colorapi
         image: parthagarwal026/argo:demo
         imagePullPolicy: Always
         ports:
         - name: web
-          containerPort: 80
+          containerPort: 5000
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: demo-concourse-flux
-  name: helloworld-svc
+  name: colorapi
 spec:
   ports:
   - port: 80
+    targetPort: 5000
   selector:
-    app: helloworld
-  type: ClusterIP
+    app: colorapi
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: canary-colorapi
+spec:
+  ports:
+  - port: 80
+    targetPort: 5000
+  selector:
+    app: colorapi
+  type: LoadBalancer
 ---
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   namespace: demo-concourse-flux
-  name: helloworld
-  annotations:
-    kubernetes.io/ingress.class: traefik
+  name: primary-ingress
 spec:
   rules:
-  - host: demo-concourse-flux.particule.io
+  - host: colorapi.particule.io
     http:
       paths:
       - backend:
-          serviceName: helloworld-svc
+          serviceName: colorapi
           servicePort: 80
