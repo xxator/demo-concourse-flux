@@ -2,13 +2,9 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
-  namespace: demo-concourse-flux
-  name: helloworld
+  name: colorapi
   labels:
-    app: helloworld
-  annotations:
-    flux.weave.works/automated: "true"
-    flux.weave.works/tag.helloworld: semver:~1.0
+    app: colorapi
 spec:
   strategy:
     maxSurge: 10
